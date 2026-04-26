@@ -1,12 +1,11 @@
 import { Router } from 'express';
+import photosRouter from './photos.js';
 
 const router = Router();
 
-// Placeholder routes - will be implemented in subsequent tasks
-router.get('/photos', (req, res) => {
-  res.json({ message: 'Photos endpoint - to be implemented' });
-});
+router.use('/photos', photosRouter);
 
+// Placeholder routes
 router.get('/albums', (req, res) => {
   res.json({ message: 'Albums endpoint - to be implemented' });
 });
