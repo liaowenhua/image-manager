@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import photosRouter from './photos.js';
+import searchRouter from './search.js';
 
 const router = Router();
 
 router.use('/photos', photosRouter);
+router.use('/search', searchRouter);
 
 // Placeholder routes
 router.get('/albums', (req, res) => {
@@ -12,10 +14,6 @@ router.get('/albums', (req, res) => {
 
 router.get('/tags', (req, res) => {
   res.json({ message: 'Tags endpoint - to be implemented' });
-});
-
-router.get('/search', (req, res) => {
-  res.json({ message: 'Search endpoint - to be implemented' });
 });
 
 export default router;
