@@ -44,9 +44,8 @@ function getExifDate(filePath: string): string | null {
     // 忽略读取错误
   }
 
-  // 备用：从父文件夹名称提取日期
+  // 备用1：从父文件夹名称提取日期
   const dirName = path.basename(path.dirname(filePath));
-  // 尝试匹配常见日期格式: 2018_08_19, 20190630, 2019_01_20 等
   const datePatterns = [
     /^(\d{4})_(\d{2})_(\d{2})$/,           // 2018_08_19
     /^(\d{4})(\d{2})(\d{2})$/,            // 20190630
@@ -58,6 +57,36 @@ function getExifDate(filePath: string): string | null {
     if (match) {
       return `${match[1]}-${match[2]}-${match[3]}`;
     }
+  }
+
+  // 备用2：从文件名提取日期 (如 IMG_20190703_123456.jpg)
+  const fileName = path.basename(filePath, path.extname(filePath));
+  const fileDatePatterns = [
+    /IMG[_-](\d{4})(\d{2})(\d{2})/,       // IMG_20190703
+    /DSC(\d{4})(\d{2})(\d{2})/,           // DSC20190703
+    /(\d{4})-(\d{2})-(\d{2})/,            // 2019-07-03
+  ];
+
+  for (const pattern of fileDatePatterns) {
+    const match = fileName.match(pattern);
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+  }
+
+  // 备用3：从 macOS 照片图库路径提取日期
+  // 路径格式: .../masters/A/ABCDEF12.../xxx.jpeg
+  // 尝试从文件名提取类似 2022-03-12 的创建日期
+  // macOS 缩略图文件名通常包含原始创建时间信息
+
+  // 备用4：使用文件修改时间作为后备
+  try {
+    const stats = fs.statSync(filePath);
+    const mtime = stats.mtime;
+    const dateStr = mtime.toISOString().split('T')[0];
+    return dateStr;
+  } catch (err) {
+    // 忽略
   }
 
   return null;

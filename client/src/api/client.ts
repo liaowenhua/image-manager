@@ -6,7 +6,7 @@ const api = axios.create({
 });
 
 // Photos
-export const getPhotos = (page = 1, limit = 20, filters?: { favorite?: boolean; rating?: number; date?: string }) =>
+export const getPhotos = (page = 1, limit = 24, filters?: { favorite?: boolean; rating?: number; date?: string }) =>
   api.get<PaginatedResponse<Photo>>('/photos', { params: { page, limit, ...filters } });
 
 export const getPhoto = (id: number) =>
@@ -82,7 +82,7 @@ export const searchPhotos = (params: {
 export const getTimeline = (year?: string) =>
   api.get<TimelineItem[]>('/search/timeline', { params: { year } });
 
-export const getFavorites = (page = 1, limit = 20) =>
+export const getFavorites = (page = 1, limit = 24) =>
   api.get<PaginatedResponse<Photo>>('/search/favorites', { params: { page, limit } });
 
 export const setFavorite = (photoId: number, favorite: boolean) =>

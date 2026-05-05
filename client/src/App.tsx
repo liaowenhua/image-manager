@@ -44,7 +44,7 @@ function App() {
     try {
       if (activeTab === 'all') {
         const filters = selectedMonth ? { date: selectedMonth } : undefined;
-        const res = await api.getPhotos(page, 20, filters);
+        const res = await api.getPhotos(page, 24, filters);
         setPhotos(res.data.data);
         setTotalPages(res.data.pagination.totalPages);
       } else if (activeTab === 'albums') {
